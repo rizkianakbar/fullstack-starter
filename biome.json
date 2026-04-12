@@ -1,0 +1,43 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"files": {
+		"ignoreUnknown": true,
+		"includes": [
+			"**/*.{json,md,toml,mjs,ts,tsx,yaml,yml}",
+			"!**/{.astro,.react-router}/**/*",
+			"!**/build/**/*",
+			"!**/databases/**/{data,schema}_migrations/**/*",
+			"!**/public/openapi/*.json",
+			"!**/secure/**/*.v*.json",
+			"!node_modules",
+			"!package.json"
+		]
+	},
+	"vcs": {
+		"useIgnoreFile": true
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"complexity": {
+				"noBannedTypes": "off"
+			},
+			"correctness": {
+				"noEmptyPattern": "off",
+				"noUnusedPrivateClassMembers": "off",
+				"noUnusedFunctionParameters": "off",
+				"noUnusedVariables": "off"
+			},
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off"
+			}
+		}
+	}
+}

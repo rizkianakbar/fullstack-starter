@@ -1,0 +1,72 @@
+[settings]
+quiet = true
+
+[tasks.api]
+description = "Run the API CLI"
+dir = "./api"
+run = "node --import=tsx ./main.ts"
+
+[tasks.check]
+description = "Run all code checks"
+depends = ["check:biome", "tsc api", "tsc dashboard"]
+
+[tasks."check:biome"]
+hide = true
+run = "bun biome check --diagnostic-level=warn --write --unsafe ."
+
+[tasks.tsc]
+description = "Run type checks"
+usage = 'arg "<pkg>"'
+run = '''
+cd "./${usage_pkg?}"
+if [ -f react-router.config.ts ]; then bun react-router typegen; fi
+bun tsgo
+'''
+
+[tasks.dev]
+description = "Start API and dashboard in watch mode"
+depends = ["dev:node api", "dev:vite dashboard"]
+
+[tasks."dev:node"]
+hide = true
+usage = 'arg "<svc>"'
+run = '''
+cd "./${usage_svc?}"
+node --import=tsx --watch-kill-signal=SIGKILL --watch-path=./{commands,databases,lib,primitives,routes,services,trpc} --watch-preserve-output ./main.ts start
+'''
+
+[tasks."dev:vite"]
+hide = true
+usage = 'arg "<pkg>"'
+run = '''
+cd "./${usage_pkg?}"
+if [ -f react-router.config.ts ]; then bun react-router dev; fi
+'''
+
+[tasks.test]
+description = "Run tests"
+run = "bun vitest run"
+
+[tasks.clean]
+description = "Clean the project"
+run = "rm -rf node_modules dashboard/node_modules **/*.log"
+
+[tasks.down]
+description = "Stop all services"
+run = "docker compose down --remove-orphans --timeout 0"
+
+[tasks.up]
+description = "Start services and setup database"
+run = ["docker compose up -d --wait", "mise api db:migrate", "mise api db:seed"]
+
+[tasks.reset]
+description = "Reset development environment"
+run = ["mise down", "mise run up"]
+
+[tasks.setup]
+description = "Setup the project"
+run = ["bun i --frozen-lockfile"]
+
+[tools]
+bun = "1.3.4"
+node = "24.11.1"

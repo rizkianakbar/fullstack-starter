@@ -1,0 +1,31 @@
+# Secrets
+.env
+.env.local
+.env.production.local
+.env.development.local
+
+# Build tools specific
+npm-debug.log
+yarn-error.log
+
+# Misc.
+.DS_Store
+.react-router
+build
+dist
+node_modules
+tmp
+.mise.local.toml
+
+# Playwright
+node_modules/
+**/test-results/
+**/playwright-report/
+**/blob-report/
+**/playwright/.cache/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
