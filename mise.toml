@@ -67,6 +67,10 @@ run = ["mise down", "mise run up"]
 description = "Setup the project"
 run = ["bun i --frozen-lockfile"]
 
+[tasks.studio]
+description = "Open Drizzle Studio"
+run = ["bun drizzle-kit studio --port 4444"]
+
 [tools]
 bun = "1.3.4"
 node = "24.11.1"
