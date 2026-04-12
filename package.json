@@ -48,7 +48,7 @@
 		"vite": "npm:rolldown-vite@^7.2.11",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^4.0.15",
-		"vitest-mock-extended": "^3.1.0",
+		"vitest-mock-extended": "^4.0.0",
 		"zod": "^4.1.13"
 	},
 	"dependencies": {
