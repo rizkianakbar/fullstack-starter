@@ -1,32 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Link, Outlet, useNavigate } from "react-router";
 import { authClient } from "#dashboard/app/lib/auth.ts";
 
-/**
- * App layout with authentication check.
- * Redirects to login if not authenticated.
- */
 export default function AppLayout() {
 	const navigate = useNavigate();
-	const [loading, setLoading] = useState(true);
+
+	const [isPending, startTransition] = useTransition();
 	const [user, setUser] = useState<{ name: string; email: string } | null>(
 		null,
 	);
 
 	useEffect(() => {
-		const checkAuth = async () => {
-			const { data: session } = await authClient.getSession();
+		authClient.getSession().then(({ data: session }) => {
 			if (!session?.user) {
 				navigate("/login");
 			} else {
-				setUser({
-					name: session.user.name,
-					email: session.user.email,
+				startTransition(() => {
+					setUser({
+						name: session.user.name,
+						email: session.user.email,
+					});
 				});
 			}
-			setLoading(false);
-		};
-		checkAuth();
+		});
 	}, [navigate]);
 
 	const handleLogout = async () => {
@@ -34,24 +30,16 @@ export default function AppLayout() {
 		navigate("/login");
 	};
 
-	if (loading) {
-		return (
-			<div className="flex min-h-screen items-center justify-center">
-				<div className="text-gray-500">Loading...</div>
-			</div>
-		);
-	}
-
 	return (
 		<div className="min-h-screen bg-gray-50">
-			{/* Navigation */}
 			<nav className="border-b bg-white">
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 					<div className="flex h-16 justify-between">
 						<div className="flex">
 							<div className="flex shrink-0 items-center">
-								<span className="text-xl font-bold">rizkianakbar</span>
+								<span className="text-xl font-bold">vite-tanstack-starter</span>
 							</div>
+
 							<div className="ml-6 flex space-x-8">
 								<Link
 									to="/payments"
@@ -61,10 +49,14 @@ export default function AppLayout() {
 								</Link>
 							</div>
 						</div>
+
 						<div className="flex items-center space-x-4">
-							{user && (
-								<span className="text-sm text-gray-500">{user.email}</span>
-							)}
+							<span
+								className={`text-sm text-gray-500 transition-opacity duration-300 ${isPending ? "opacity-0" : "opacity-100"}`}
+							>
+								{user?.email}
+							</span>
+
 							<button
 								type="button"
 								onClick={handleLogout}
@@ -77,8 +69,9 @@ export default function AppLayout() {
 				</div>
 			</nav>
 
-			{/* Main content */}
-			<main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+			<main
+				className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 transition-opacity duration-300 ${isPending ? "opacity-50" : "opacity-100"}`}
+			>
 				<Outlet />
 			</main>
 		</div>
