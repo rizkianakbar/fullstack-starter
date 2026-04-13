@@ -24,7 +24,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<Links />
 			</head>
 
-			<body className="min-h-screen bg-background antialiased">
+			<body
+				className="min-h-screen bg-background antialiased"
+				cz-shortcut-listen="true"
+			>
 				<TRPCProvider url="http://localhost:3001/trpc">{children}</TRPCProvider>
 				<Toaster />
 				<ScrollRestoration />
