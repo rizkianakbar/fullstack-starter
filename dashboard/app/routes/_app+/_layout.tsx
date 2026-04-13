@@ -1,32 +1,28 @@
-import { useEffect, useState, useTransition } from "react";
-import { Link, Outlet, useNavigate } from "react-router";
+import {
+	Link,
+	Outlet,
+	redirect,
+	useLoaderData,
+	useNavigate,
+} from "react-router";
 import { authClient } from "#dashboard/app/lib/auth.ts";
+
+export async function clientLoader() {
+	const { data: session } = await authClient.getSession();
+
+	if (!session) return redirect("/login");
+
+	return { session };
+}
 
 export default function AppLayout() {
 	const navigate = useNavigate();
 
-	const [isPending, startTransition] = useTransition();
-	const [user, setUser] = useState<{ name: string; email: string } | null>(
-		null,
-	);
-
-	useEffect(() => {
-		authClient.getSession().then(({ data: session }) => {
-			if (!session?.user) {
-				navigate("/login");
-			} else {
-				startTransition(() => {
-					setUser({
-						name: session.user.name,
-						email: session.user.email,
-					});
-				});
-			}
-		});
-	}, [navigate]);
+	const { session } = useLoaderData<typeof clientLoader>();
 
 	const handleLogout = async () => {
 		await authClient.signOut();
+
 		navigate("/login");
 	};
 
@@ -51,10 +47,8 @@ export default function AppLayout() {
 						</div>
 
 						<div className="flex items-center space-x-4">
-							<span
-								className={`text-sm text-gray-500 transition-opacity duration-300 ${isPending ? "opacity-0" : "opacity-100"}`}
-							>
-								{user?.email}
+							<span className="text-sm text-gray-500 transition-opacity duration-300">
+								{session?.user?.email}
 							</span>
 
 							<button
@@ -69,9 +63,7 @@ export default function AppLayout() {
 				</div>
 			</nav>
 
-			<main
-				className={`mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 transition-opacity duration-300 ${isPending ? "opacity-50" : "opacity-100"}`}
-			>
+			<main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 transition-opacity duration-300">
 				<Outlet />
 			</main>
 		</div>
