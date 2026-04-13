@@ -59,7 +59,7 @@ export class CLI<C extends Container = Container> {
 	}
 
 	private showHelp(): void {
-		console.log("vite-tanstack-starter API CLI\n");
+		console.log("fullstack-starter API CLI\n");
 		console.log("Commands:");
 
 		for (const [name, cmd] of this.commands) {

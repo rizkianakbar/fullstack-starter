@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "vite-tanstack-starter",
+      "name": "fullstack-starter",
       "dependencies": {
         "@react-router/node": "^7.10.1",
         "isbot": "^5.1.32",

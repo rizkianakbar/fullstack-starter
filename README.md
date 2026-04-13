@@ -26,7 +26,7 @@ mise dev
 ## Project Structure
 
 ```
-vite-tanstack-starter/
+fullstack-starter/
 ├── api/                   # Backend API
 │   ├── routes/v1+/        # OpenAPI routes (external API)
 │   ├── trpc/              # tRPC routers (dashboard)

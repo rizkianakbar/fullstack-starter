@@ -37,7 +37,7 @@ export default function AppLayout() {
 					<div className="flex h-16 justify-between">
 						<div className="flex">
 							<div className="flex shrink-0 items-center">
-								<span className="text-xl font-bold">vite-tanstack-starter</span>
+								<span className="text-xl font-bold">fullstack-starter</span>
 							</div>
 
 							<div className="ml-6 flex space-x-8">

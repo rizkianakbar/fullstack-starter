@@ -56,7 +56,7 @@ export async function defineDatabase<
 >(opts: DefineDatabaseOptions<TSchema, TRelations>) {
 	return drizzle({
 		client: new Pool({
-			application_name: "vite-tanstack-starter",
+			application_name: "fullstack-starter",
 			max: 16,
 			...opts.poolConfig,
 		}),
