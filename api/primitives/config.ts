@@ -6,7 +6,9 @@ import { z } from "zod";
 export const schema = z.object({
 	DATABASE_URL: z
 		.string()
-		.default("postgresql://postgres:postgres@localhost:5432/rizkianakbar"),
+		.default(
+			"postgresql://postgres:postgres@localhost:5432/vite-tanstack-starter",
+		),
 	HOST: z.string().default("0.0.0.0"),
 	PORT: z.coerce.number().default(3001),
 	SECRET_KEY: z.string().default("asd-secret-key-change-in-production"),

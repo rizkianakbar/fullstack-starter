@@ -14,9 +14,6 @@
 	},
 	"javascript.format.enable": false,
 	"javascript.preferences.importModuleSpecifier": "non-relative",
-	"typescript.experimental.useTsgo": true,
-	"typescript.format.enable": false,
-	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"[typescriptreact]": {
 		"editor.defaultFormatter": "biomejs.biome"
 	}

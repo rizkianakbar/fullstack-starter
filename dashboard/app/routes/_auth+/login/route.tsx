@@ -40,7 +40,7 @@ export default function LoginRoute() {
 			<div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow">
 				<div>
 					<h2 className="text-center text-3xl font-bold tracking-tight text-gray-900">
-						rizkianakbar
+						vite-tanstack-starter
 					</h2>
 
 					<p className="mt-2 text-center text-sm text-gray-600">

@@ -3,7 +3,7 @@
 	"configVersion": 1,
 	"workspaces": {
 		"": {
-			"name": "rizkianakbar",
+			"name": "vite-tanstack-starter",
 			"dependencies": {
 				"@react-router/node": "^7.10.1",
 				"isbot": "^5.1.32",

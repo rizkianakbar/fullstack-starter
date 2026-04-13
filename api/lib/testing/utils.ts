@@ -34,7 +34,7 @@ export async function defineMockContainer() {
 	const { db, cleanUp: dbCleanUp } = await defineTestDatabase({
 		connectionString: config.DATABASE_URL,
 		logger,
-		name: "rizkianakbar",
+		name: "vite-tanstack-starter",
 		relations,
 		schema,
 	});

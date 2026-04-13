@@ -40,7 +40,7 @@ export type Auth = ReturnType<typeof defineAuth>;
  */
 export function defineAuth({ config, db, logger }: DefineAuthOptions) {
 	return betterAuth({
-		appName: "rizkianakbar",
+		appName: "vite-tanstack-starter",
 		baseURL: config.API_URL,
 		basePath: "/auth",
 		database: drizzleAdapter(db, {
