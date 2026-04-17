@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5432,
     user: 'postgres',
     password: 'postgres',
-    database: 'autopilot',
+    database: 'fullstack-starter',
     ssl: false,
   },
 });
