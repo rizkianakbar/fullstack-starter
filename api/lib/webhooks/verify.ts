@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from 'node:crypto';
 
 /**
  * Verifies a webhook signature using HMAC-SHA256.
@@ -21,26 +21,21 @@ import { createHmac, timingSafeEqual } from "node:crypto";
  * ```
  */
 export function verifyWebhookSignature(
-	payload: Buffer | string,
-	signature: string | undefined,
-	secret: string,
+  payload: Buffer | string,
+  signature: string | undefined,
+  secret: string,
 ): boolean {
-	if (!signature || !signature.startsWith("sha256=")) {
-		return false;
-	}
+  if (!signature || !signature.startsWith('sha256=')) {
+    return false;
+  }
 
-	const expectedSig = signature.slice(7); // Remove "sha256=" prefix
-	const computedSig = createHmac("sha256", secret)
-		.update(payload)
-		.digest("hex");
+  const expectedSig = signature.slice(7); // Remove "sha256=" prefix
+  const computedSig = createHmac('sha256', secret).update(payload).digest('hex');
 
-	// Use timing-safe comparison to prevent timing attacks
-	try {
-		return timingSafeEqual(
-			Buffer.from(expectedSig, "hex"),
-			Buffer.from(computedSig, "hex"),
-		);
-	} catch {
-		return false;
-	}
+  // Use timing-safe comparison to prevent timing attacks
+  try {
+    return timingSafeEqual(Buffer.from(expectedSig, 'hex'), Buffer.from(computedSig, 'hex'));
+  } catch {
+    return false;
+  }
 }

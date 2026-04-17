@@ -1,9 +1,5 @@
-import {
-	type LoggerOptions,
-	default as pino,
-	type TransportSingleOptions,
-} from "pino";
-import pinoPretty from "pino-pretty";
+import { type LoggerOptions, default as pino, type TransportSingleOptions } from 'pino';
+import pinoPretty from 'pino-pretty';
 
 /**
  * Logger options.
@@ -22,24 +18,18 @@ export type Logger = Awaited<ReturnType<typeof defineLogger>>;
  * @returns The logger.
  */
 export async function defineLogger(opts: DefineLoggerOptions) {
-	const transports: TransportSingleOptions[] = [];
-	const commonOpts = {
-		level: opts.level || "info",
-		redact: opts.redact || [],
-		...(transports.length > 0 && {
-			transport:
-				transports.length === 1 ? transports[0] : { targets: transports },
-		}),
-	} satisfies LoggerOptions;
+  const transports: TransportSingleOptions[] = [];
+  const commonOpts = {
+    level: opts.level || 'info',
+    redact: opts.redact || [],
+    ...(transports.length > 0 && {
+      transport: transports.length === 1 ? transports[0] : { targets: transports },
+    }),
+  } satisfies LoggerOptions;
 
-	try {
-		return pino(
-			commonOpts,
-			process.env.NODE_ENV !== "production" && !process.env.VITEST
-				? pinoPretty()
-				: undefined,
-		);
-	} catch (_) {
-		return pino(commonOpts);
-	}
+  try {
+    return pino(commonOpts, process.env.NODE_ENV !== 'production' && !process.env.VITEST ? pinoPretty() : undefined);
+  } catch (_) {
+    return pino(commonOpts);
+  }
 }

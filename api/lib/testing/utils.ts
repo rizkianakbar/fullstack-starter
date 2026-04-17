@@ -1,20 +1,18 @@
-import type { Request } from "ultimate-express";
-import { test } from "vitest";
-import { mock } from "vitest-mock-extended";
-import { relations } from "#api/databases/relations.ts";
-import * as schema from "#api/databases/schema.ts";
-import type { AppContext } from "#api/primitives/app-context.ts";
-import { defineAuth } from "#api/primitives/auth.ts";
-import { defineConfig } from "#api/primitives/config.ts";
-import { defineTestDatabase } from "#api/primitives/database.ts";
-import type { Logger } from "#api/primitives/logger.ts";
+import type { Request } from 'ultimate-express';
+import { test } from 'vitest';
+import { mock } from 'vitest-mock-extended';
+import { relations } from '#api/databases/relations.ts';
+import * as schema from '#api/databases/schema.ts';
+import type { AppContext } from '#api/primitives/app-context.ts';
+import { defineAuth } from '#api/primitives/auth.ts';
+import { defineConfig } from '#api/primitives/config.ts';
+import { defineTestDatabase } from '#api/primitives/database.ts';
+import type { Logger } from '#api/primitives/logger.ts';
 
 /**
  * The mock container type.
  */
-export type MockContainer = Awaited<
-	ReturnType<typeof defineMockContainer>
->["container"];
+export type MockContainer = Awaited<ReturnType<typeof defineMockContainer>>['container'];
 
 /**
  * Defines a mock container with isolated test database for testing.
@@ -29,32 +27,32 @@ export type MockContainer = Awaited<
  * ```
  */
 export async function defineMockContainer() {
-	const config = defineConfig();
-	const logger = mock<Logger>();
-	const { db, cleanUp: dbCleanUp } = await defineTestDatabase({
-		connectionString: config.DATABASE_URL,
-		logger,
-		name: "fullstack-starter",
-		relations,
-		schema,
-	});
-	const auth = defineAuth({
-		config,
-		db,
-		logger,
-	});
+  const config = defineConfig();
+  const logger = mock<Logger>();
+  const { db, cleanUp: dbCleanUp } = await defineTestDatabase({
+    connectionString: config.DATABASE_URL,
+    logger,
+    name: 'fullstack-starter',
+    relations,
+    schema,
+  });
+  const auth = defineAuth({
+    config,
+    db,
+    logger,
+  });
 
-	return {
-		container: {
-			auth,
-			config,
-			db,
-			logger,
-		},
-		cleanUp: async () => {
-			await dbCleanUp();
-		},
-	};
+  return {
+    container: {
+      auth,
+      config,
+      db,
+      logger,
+    },
+    cleanUp: async () => {
+      await dbCleanUp();
+    },
+  };
 }
 
 /**
@@ -88,13 +86,13 @@ export async function defineMockContainer() {
  * ```
  */
 export const serverTest = test.extend<{
-	container: MockContainer;
+  container: MockContainer;
 }>({
-	async container({}, use) {
-		const { container, cleanUp } = await defineMockContainer();
-		await use(container);
-		await cleanUp();
-	},
+  async container({}, use) {
+    const { container, cleanUp } = await defineMockContainer();
+    await use(container);
+    await cleanUp();
+  },
 });
 
 /**
@@ -109,18 +107,18 @@ export const serverTest = test.extend<{
  * ```
  */
 export function defineTestAppContext(
-	container: MockContainer,
-	overrides: {
-		apiKey?: AppContext["apiKey"];
-		session?: AppContext["session"];
-		user?: AppContext["user"];
-	} = {},
+  container: MockContainer,
+  overrides: {
+    apiKey?: AppContext['apiKey'];
+    session?: AppContext['session'];
+    user?: AppContext['user'];
+  } = {},
 ): AppContext {
-	return {
-		apiKey: overrides.apiKey ?? null,
-		container,
-		request: mock<Request>(),
-		session: overrides.session ?? null,
-		user: overrides.user ?? null,
-	};
+  return {
+    apiKey: overrides.apiKey ?? null,
+    container,
+    request: mock<Request>(),
+    session: overrides.session ?? null,
+    user: overrides.user ?? null,
+  };
 }

@@ -1,4 +1,4 @@
-import { defineOpenAPI } from "#api/primitives/openapi.ts";
+import { defineOpenAPI } from '#api/primitives/openapi.ts';
 
 /**
  * OpenAPI route for external API access via API key.
