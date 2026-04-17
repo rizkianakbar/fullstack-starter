@@ -3,7 +3,7 @@
 	"files": {
 		"ignoreUnknown": true,
 		"includes": [
-			"**/*.{json,md,toml,mjs,ts,tsx,yaml,yml}",
+			"**/*.{css,json,md,mjs,scss,toml,mjs,ts,tsx,yaml,yml}",
 			"!**/{.astro,.react-router}/**/*",
 			"!**/app/app/routeTree.gen.ts",
 			"!**/build/**/*",
@@ -19,7 +19,33 @@
 	},
 	"formatter": {
 		"enabled": true,
-		"formatWithErrors": true
+		"formatWithErrors": true,
+		"indentStyle": "space",
+		"indentWidth": 2,
+		"lineWidth": 120
+	},
+	"javascript": {
+		"formatter": {
+			"bracketSameLine": true,
+			"quoteStyle": "single",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		}
+	},
+	"json": {
+		"formatter": {
+			"lineWidth": 120
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		},
+		"formatter": {
+			"enabled": true,
+			"lineWidth": 120,
+			"quoteStyle": "single"
+		}
 	},
 	"linter": {
 		"enabled": true,
