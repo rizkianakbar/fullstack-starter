@@ -1,4 +1,10 @@
-export default function PaymentsPage() {
+import { createFileRoute } from "@tanstack/react-router";
+
+export const Route = createFileRoute("/_authenticated/payments")({
+	component: PaymentsPage,
+});
+
+function PaymentsPage() {
 	return (
 		<div className="space-y-8">
 			<div>

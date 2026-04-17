@@ -8,7 +8,7 @@
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"resolveJsonModule": true,
-		"rootDirs": [".", "./.react-router/types"],
+		"rootDirs": ["."],
 		"skipLibCheck": true,
 		"strict": true,
 		"target": "ES2022",
@@ -19,6 +19,6 @@
 		"**/*",
 		"**/.server/**/*",
 		"**/.client/**/*",
-		".react-router/types/**/*"
+		"src/routeTree.gen.ts"
 	]
 }

@@ -8,7 +8,7 @@ run = "node --import=tsx ./main.ts"
 
 [tasks.check]
 description = "Run all code checks"
-depends = ["check:biome", "tsc api", "tsc dashboard"]
+depends = ["check:biome", "tsc api", "tsc app"]
 
 [tasks."check:biome"]
 hide = true
@@ -19,13 +19,12 @@ description = "Run type checks"
 usage = 'arg "<pkg>"'
 run = '''
 cd "./${usage_pkg?}"
-if [ -f react-router.config.ts ]; then bun react-router typegen; fi
 bun tsgo
 '''
 
 [tasks.dev]
-description = "Start API and dashboard in watch mode"
-depends = ["dev:node api", "dev:vite dashboard"]
+description = "Start API and app in watch mode"
+depends = ["dev:node api", "dev:vite app"]
 
 [tasks."dev:node"]
 hide = true
@@ -40,7 +39,7 @@ hide = true
 usage = 'arg "<pkg>"'
 run = '''
 cd "./${usage_pkg?}"
-if [ -f react-router.config.ts ]; then bun react-router dev; fi
+bun vite
 '''
 
 [tasks.test]
@@ -49,7 +48,7 @@ run = "bun vitest run"
 
 [tasks.clean]
 description = "Clean the project"
-run = "rm -rf node_modules dashboard/node_modules **/*.log"
+run = "rm -rf node_modules app/node_modules **/*.log"
 
 [tasks.down]
 description = "Stop all services"

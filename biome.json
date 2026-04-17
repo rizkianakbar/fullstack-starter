@@ -5,6 +5,7 @@
 		"includes": [
 			"**/*.{json,md,toml,mjs,ts,tsx,yaml,yml}",
 			"!**/{.astro,.react-router}/**/*",
+			"!**/app/app/routeTree.gen.ts",
 			"!**/build/**/*",
 			"!**/databases/**/{data,schema}_migrations/**/*",
 			"!**/public/openapi/*.json",

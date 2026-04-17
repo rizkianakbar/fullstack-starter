@@ -1,29 +1,32 @@
 import {
+	createFileRoute,
 	Link,
 	Outlet,
 	redirect,
-	useLoaderData,
 	useNavigate,
-} from "react-router";
-import { authClient } from "#dashboard/app/lib/auth.ts";
+} from "@tanstack/react-router";
+import { authClient } from "../lib/auth";
 
-export async function clientLoader() {
-	const { data: session } = await authClient.getSession();
+export const Route = createFileRoute("/_authenticated")({
+	beforeLoad: async () => {
+		const { data: session } = await authClient.getSession();
 
-	if (!session) return redirect("/login");
+		if (!session) throw redirect({ to: "/login" });
 
-	return { session };
-}
+		return { session };
+	},
+	component: AuthenticatedLayout,
+});
 
-export default function AppLayout() {
+function AuthenticatedLayout() {
 	const navigate = useNavigate();
 
-	const { session } = useLoaderData<typeof clientLoader>();
+	const { session } = Route.useRouteContext();
 
 	const handleLogout = async () => {
 		await authClient.signOut();
 
-		navigate("/login");
+		navigate({ to: "/login" });
 	};
 
 	return (

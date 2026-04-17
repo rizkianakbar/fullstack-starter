@@ -1,11 +1,19 @@
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useNavigate } from "react-router";
-import { authClient } from "#dashboard/app/lib/auth.ts";
+import { authClient } from "../lib/auth";
+
+export const Route = createFileRoute("/login")({
+	beforeLoad: async () => {
+		const { data: session } = await authClient.getSession();
+		if (session) throw redirect({ to: "/payments" });
+	},
+	component: LoginRoute,
+});
 
 /**
  * Login page
  */
-export default function LoginRoute() {
+function LoginRoute() {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState("test@example.com");
 	const [password, setPassword] = useState("password123");
@@ -18,6 +26,7 @@ export default function LoginRoute() {
 		setLoading(true);
 
 		try {
+			console.log("result");
 			const result = await authClient.signIn.email({
 				email,
 				password,
@@ -26,9 +35,9 @@ export default function LoginRoute() {
 			if (result.error) {
 				setError(result.error.message || "Login failed");
 			} else {
-				navigate("/payments");
+				navigate({ to: "/payments" });
 			}
-		} catch (err) {
+		} catch {
 			setError("An unexpected error occurred");
 		} finally {
 			setLoading(false);

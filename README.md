@@ -1,7 +1,7 @@
 ## Tech Stack
 
 - **Backend:** Express + tRPC + Drizzle ORM + PostgreSQL
-- **Frontend:** React + React Router v7 + tRPC Client
+- **Frontend:** React + TanStack Router + tRPC Client
 - **Build:** TypeScript strict mode + Biome + Vitest
 
 ## Prerequisites

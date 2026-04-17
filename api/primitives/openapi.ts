@@ -1,7 +1,5 @@
-import { access } from "node:fs/promises";
-import { resolve } from "node:path";
-import { remixRoutesOptionAdapter as flatRoutesOptionAdapter } from "@react-router/remix-routes-option-adapter";
-import { flatRoutes } from "remix-flat-routes";
+import { access, readdir } from "node:fs/promises";
+import { dirname, join, relative, resolve, sep } from "node:path";
 import type {
 	Express,
 	Request as ExpressRequest,
@@ -371,6 +369,60 @@ const appDir = ".";
 const routesDir = "routes";
 
 /**
+ * Map a remix-flat-routes-style folder name (`segment+`, `$param+`) to one
+ * URL path segment (`segment`, `:param`). Returns null if the name is not
+ * recognized.
+ */
+function folderNameToUrlSegment(name: string): string | null {
+	if (!name.endsWith("+")) {
+		return null;
+	}
+	const base = name.slice(0, -1);
+	if (base.startsWith("$")) {
+		return `:${base.slice(1)}`;
+	}
+	return base;
+}
+
+/**
+ * Express path for `routes/.../index.ts`, e.g. `v1+/payments+/index.ts` →
+ * `/v1/payments`.
+ */
+function expressPathForRouteFile(
+	routesRoot: string,
+	absoluteIndexFile: string,
+): string | null {
+	const relDir = relative(routesRoot, dirname(absoluteIndexFile));
+	if (relDir === "") {
+		return "/";
+	}
+	const parts = relDir.split(sep).filter(Boolean);
+	const urlParts: string[] = [];
+	for (const part of parts) {
+		const segment = folderNameToUrlSegment(part);
+		if (segment === null) {
+			return null;
+		}
+		urlParts.push(segment);
+	}
+	return `/${urlParts.join("/")}`;
+}
+
+async function* walkRouteIndexFiles(
+	dir: string,
+): AsyncGenerator<string, void, undefined> {
+	const entries = await readdir(dir, { withFileTypes: true });
+	for (const ent of entries) {
+		const full = join(dir, ent.name);
+		if (ent.isDirectory()) {
+			yield* walkRouteIndexFiles(full);
+		} else if (ent.isFile() && ent.name === "index.ts") {
+			yield full;
+		}
+	}
+}
+
+/**
  * Route module type for scanned API routes.
  */
 export type RouteModule = {
@@ -379,29 +431,29 @@ export type RouteModule = {
 };
 
 /**
- * Scan routes directory and load route modules using remix-flat-routes.
+ * Scan `routes/` for `defineOpenAPI` modules (flat `segment+` folders, same
+ * layout as before) and derive Express paths without React Router tooling.
  */
 export async function scanAPIRoutes(
 	container: Container,
 ): Promise<RouteModule[]> {
-	const fullPath = resolve(`${appDir}/${routesDir}`);
+	const routesRoot = resolve(`${appDir}/${routesDir}`);
 	try {
-		await access(fullPath);
+		await access(routesRoot);
 	} catch {
 		container.logger.warn("OpenAPI routes directory not found");
 		return [];
 	}
 
-	const routeManifest = await flatRoutesOptionAdapter((defineRoutes) => {
-		return flatRoutes(routesDir, defineRoutes, {
-			appDir,
-			ignoredRouteFiles: ["**/.*", "**/*.test.ts"],
-		});
-	});
-
 	const routes: RouteModule[] = [];
-	for (const [_routeId, route] of Object.entries(routeManifest)) {
-		const absolutePath = resolve(`${appDir}/${route.file}`);
+	for await (const absolutePath of walkRouteIndexFiles(routesRoot)) {
+		const routePath = expressPathForRouteFile(routesRoot, absolutePath);
+		if (routePath === null) {
+			container.logger.warn(
+				`Skipping route file (unsupported path segments): ${relative(process.cwd(), absolutePath)}`,
+			);
+			continue;
+		}
 
 		try {
 			const module = await import(absolutePath);
@@ -411,12 +463,9 @@ export async function scanAPIRoutes(
 				continue;
 			}
 
-			// Convert route path: $id -> :id (Express param format)
-			let routePath = `/${route.path || ""}`;
-			routePath = routePath.replace(/\$(\w+)/g, ":$1");
-
+			const routeFile = relative(resolve(appDir), absolutePath);
 			container.logger.info(
-				`Registering route: ${routePath} from ${route.file}`,
+				`Registering route: ${routePath} from ${routeFile}`,
 			);
 
 			routes.push({
@@ -424,7 +473,10 @@ export async function scanAPIRoutes(
 				handlers: exported.handlers,
 			});
 		} catch (error) {
-			container.logger.error(error, `Error loading route ${route.file}:`);
+			container.logger.error(
+				error,
+				`Error loading route ${relative(process.cwd(), absolutePath)}:`,
+			);
 		}
 	}
 
