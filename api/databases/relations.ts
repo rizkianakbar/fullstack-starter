@@ -15,9 +15,9 @@ export const relations = defineRelations(schema, (r) => ({
       from: r.users.id,
       to: r.apiKeys.userId,
     }),
-    payments: r.many.payments({
+    posts: r.many.posts({
       from: r.users.id,
-      to: r.payments.createdBy,
+      to: r.posts.createdBy,
     }),
   },
   sessions: {
@@ -38,9 +38,9 @@ export const relations = defineRelations(schema, (r) => ({
       to: r.users.id,
     }),
   },
-  payments: {
-    creator: r.one.users({
-      from: r.payments.createdBy,
+  posts: {
+    author: r.one.users({
+      from: r.posts.createdBy,
       to: r.users.id,
     }),
   },

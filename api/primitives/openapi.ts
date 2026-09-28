@@ -127,17 +127,17 @@ export type HandlerParams<
  * @example
  * ```typescript
  * GET: defineOpenAPIEndpoint({
- *   summary: "List payments",
+ *   summary: "List posts",
  *   responses: {
- *     200: { description: "Success", schema: z.array(PaymentSchema) },
+ *     200: { description: "Success", schema: z.array(PostSchema) },
  *     401: { description: "Unauthorized", schema: z.object({ error: z.string() }) },
  *   },
  *   async handler({ ctx, response }) {
  *     if (!ctx.apiKey) {
  *       return response.unauthorized({ error: "API key required" });
  *     }
- *     const payments = await listPayments(ctx.container.db, ctx.apiKey.userId);
- *     return response.ok(payments);
+ *     const posts = await listPosts(ctx.container.db, ctx.apiKey.userId);
+ *     return response.ok(posts);
  *   },
  * }),
  * ```
@@ -360,8 +360,8 @@ function folderNameToUrlSegment(name: string): string | null {
 }
 
 /**
- * Express path for `routes/.../index.ts`, e.g. `v1+/payments+/index.ts` →
- * `/v1/payments`.
+ * Express path for `routes/.../index.ts`, e.g. `v1+/posts+/index.ts` →
+ * `/v1/posts`.
  */
 function expressPathForRouteFile(routesRoot: string, absoluteIndexFile: string): string | null {
   const relDir = relative(routesRoot, dirname(absoluteIndexFile));

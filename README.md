@@ -108,6 +108,8 @@ protectedProcedure.query(({ ctx }) => {
 
 ## Reference Examples
 
-- OpenAPI pattern: `api/routes/v1+/payments+/$id+/index.ts` (GET endpoint)
+A worked `posts` resource is threaded through every layer (schema, service, tRPC router, OpenAPI routes, webhook, seed data, tests, and UI) to demonstrate the pattern end to end. Swap it out for your own domain.
+
+- OpenAPI pattern: `api/routes/v1+/posts+/$id+/index.ts` (GET endpoint)
 - tRPC pattern: `api/trpc/init.ts`
 - UI components: `assets/components/ui/`

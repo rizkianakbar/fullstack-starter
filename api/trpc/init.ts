@@ -35,7 +35,7 @@ export const publicProcedure = t.procedure;
  * ```typescript
  * list: protectedProcedure.query(async ({ ctx }) => {
  *   // ctx.user is guaranteed to be non-null
- *   return listPayments(ctx.container.db, ctx.user.id);
+ *   return listPosts(ctx.container.db, ctx.user.id);
  * }),
  * ```
  */

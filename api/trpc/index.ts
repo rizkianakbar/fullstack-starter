@@ -1,11 +1,11 @@
 import { router } from './init.ts';
-import { paymentsRouter } from './payments.ts';
+import { postsRouter } from './posts.ts';
 
 /**
  * The main application router.
  */
 export const appRouter = router({
-  payments: paymentsRouter,
+  posts: postsRouter,
 });
 
 /**

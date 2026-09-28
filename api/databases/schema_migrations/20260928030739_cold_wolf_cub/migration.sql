@@ -23,13 +23,11 @@ CREATE TABLE "api_keys" (
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "payments" (
+CREATE TABLE "posts" (
 	"id" text PRIMARY KEY DEFAULT uuidv7(),
-	"amount" integer NOT NULL,
-	"currency" text DEFAULT 'USD' NOT NULL,
-	"status" text DEFAULT 'pending' NOT NULL,
-	"recipient_email" text NOT NULL,
-	"description" text,
+	"title" text NOT NULL,
+	"content" text,
+	"status" text DEFAULT 'draft' NOT NULL,
 	"last_webhook_id" text,
 	"created_by" text NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
@@ -68,9 +66,9 @@ CREATE TABLE "verifications" (
 --> statement-breakpoint
 CREATE INDEX "api_keys_user_id_idx" ON "api_keys" ("user_id");--> statement-breakpoint
 CREATE INDEX "api_keys_prefix_idx" ON "api_keys" ("prefix");--> statement-breakpoint
-CREATE INDEX "payments_created_by_idx" ON "payments" ("created_by");--> statement-breakpoint
-CREATE INDEX "payments_status_idx" ON "payments" ("status");--> statement-breakpoint
+CREATE INDEX "posts_created_by_idx" ON "posts" ("created_by");--> statement-breakpoint
+CREATE INDEX "posts_status_idx" ON "posts" ("status");--> statement-breakpoint
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "api_keys" ADD CONSTRAINT "api_keys_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
-ALTER TABLE "payments" ADD CONSTRAINT "payments_created_by_users_id_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id");--> statement-breakpoint
+ALTER TABLE "posts" ADD CONSTRAINT "posts_created_by_users_id_fkey" FOREIGN KEY ("created_by") REFERENCES "users"("id");--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;

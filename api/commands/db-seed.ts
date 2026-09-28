@@ -5,7 +5,7 @@ import * as schema from '#api/databases/schema.ts';
 import { defineCommand } from '#api/primitives/cli.ts';
 
 function generateApiKey(): { key: string; prefix: string; hash: string } {
-  const prefix = 'pk_test';
+  const prefix = 'ak_test';
   const random = randomBytes(24).toString('hex');
   const key = `${prefix}_${random}`;
   const hash = createHash('sha256').update(key).digest('hex');
@@ -29,6 +29,15 @@ export const dbSeed = defineCommand({
       })
       .returning();
 
+    const [otherUser] = await db
+      .insert(schema.users)
+      .values({
+        email: 'priya@example.com',
+        name: 'Priya Shah',
+        emailVerified: true,
+      })
+      .returning();
+
     await db.insert(schema.accounts).values({
       userId: user.id,
       accountId: user.id,
@@ -44,50 +53,42 @@ export const dbSeed = defineCommand({
       userId: user.id,
     });
 
-    await db.insert(schema.payments).values([
+    const hoursAgo = (hours: number) => new Date(Date.now() - hours * 60 * 60 * 1000).toISOString();
+
+    await db.insert(schema.posts).values([
       {
-        amount: 10000,
-        currency: 'USD',
-        status: 'completed',
-        recipientEmail: 'alice@example.com',
-        description: 'Invoice #001',
+        title: 'Finally got db:gen and db:migrate playing nicely together',
+        content: 'Finally got db:gen and db:migrate playing nicely together. No more hand-written SQL.',
         createdBy: user.id,
+        createdAt: hoursAgo(1),
       },
       {
-        amount: 25000,
-        currency: 'USD',
-        status: 'processing',
-        recipientEmail: 'bob@example.com',
-        description: 'Invoice #002',
-        createdBy: user.id,
+        title: 'Trying out the new posts feed, seems to work',
+        content: 'Trying out the new posts feed, seems to work.',
+        createdBy: otherUser.id,
+        createdAt: hoursAgo(3),
       },
       {
-        amount: 5000,
-        currency: 'USD',
-        status: 'pending',
-        recipientEmail: 'charlie@example.com',
-        description: 'Refund',
+        title: 'Reminder: check the webhook idempotency key before merging',
+        content: 'Reminder to self: check the webhook idempotency key before merging.',
         createdBy: user.id,
+        createdAt: hoursAgo(20),
       },
       {
-        amount: 15000,
-        currency: 'USD',
-        status: 'failed',
-        recipientEmail: 'diana@example.com',
-        description: 'Invoice #003',
-        createdBy: user.id,
+        title: "Deleting only works on your own posts, good, that's the point",
+        content: "Deleting only works on your own posts. Good, that's the point.",
+        createdBy: otherUser.id,
+        createdAt: hoursAgo(30),
       },
       {
-        amount: 8500,
-        currency: 'USD',
-        status: 'completed',
-        recipientEmail: 'eve@example.com',
-        description: 'Subscription payment',
+        title: 'First post',
+        content: 'First post.',
         createdBy: user.id,
+        createdAt: hoursAgo(96),
       },
     ]);
 
-    console.log(`Seeded: user=test@example.com pass=password123 api_key=${key} payments=5`);
+    console.log(`Seeded: user=test@example.com pass=password123 api_key=${key} posts=5`);
 
     await db.$client.end();
   },

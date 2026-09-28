@@ -62,26 +62,25 @@ export async function defineMockContainer() {
  * @example
  * ```typescript
  * import { serverTest } from "#api/lib/testing/utils.ts";
- * import { users, payments } from "#api/databases/schema.ts";
+ * import { users, posts } from "#api/databases/schema.ts";
  *
- * serverTest("creates payment", async ({ container }) => {
+ * serverTest("creates post", async ({ container }) => {
  *   // Create a test user
  *   const [user] = await container.db
  *     .insert(users)
  *     .values({ email: "test@example.com", name: "Test" })
  *     .returning();
  *
- *   // Create a payment
- *   const [payment] = await container.db
- *     .insert(payments)
+ *   // Create a post
+ *   const [post] = await container.db
+ *     .insert(posts)
  *     .values({
- *       amount: 1000,
- *       recipientEmail: "recipient@example.com",
+ *       title: "Hello world",
  *       createdBy: user.id,
  *     })
  *     .returning();
  *
- *   expect(payment.amount).toBe(1000);
+ *   expect(post.title).toBe("Hello world");
  * });
  * ```
  */

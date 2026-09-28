@@ -3,20 +3,20 @@ import { defineOpenAPI, defineOpenAPIEndpoint } from '#api/primitives/openapi.ts
 
 const WebhookEventSchema = z.object({
   id: z.string(),
-  type: z.literal('payment.status_changed'),
+  type: z.literal('post.status_changed'),
   data: z.object({
-    paymentId: z.string(),
-    newStatus: z.enum(['processing', 'completed', 'failed']),
-    previousStatus: z.enum(['pending', 'processing']),
+    postId: z.string(),
+    newStatus: z.enum(['published', 'archived']),
+    previousStatus: z.enum(['draft', 'published']),
   }),
 });
 
 /**
- * Webhook handler for payment status updates from external provider.
+ * Webhook handler for post status updates from an external provider.
  */
 export default defineOpenAPI({
   POST: defineOpenAPIEndpoint({
-    summary: 'Handle payment status webhook',
+    summary: 'Handle post status webhook',
     requestBody: WebhookEventSchema,
     responses: {
       200: {

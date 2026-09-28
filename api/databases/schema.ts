@@ -94,23 +94,24 @@ export const apiKeys = pgTable(
 );
 
 /**
- * Payment status enum values.
+ * Post status enum values.
  */
-export const paymentStatuses = ['pending', 'processing', 'completed', 'failed'] as const;
-export type PaymentStatus = (typeof paymentStatuses)[number];
+export const postStatuses = ['draft', 'published', 'archived'] as const;
+export type PostStatus = (typeof postStatuses)[number];
 
 /**
- * Payments table
+ * Posts table.
+ *
+ * This is a worked example resource showing the schema -> service -> tRPC / OpenAPI
+ * pattern used throughout the codebase. Swap it out for your own domain.
  */
-export const payments = pgTable(
-  'payments',
+export const posts = pgTable(
+  'posts',
   (t) => ({
     id: t.text('id').primaryKey().default(sql`uuidv7()`),
-    amount: t.integer('amount').notNull(),
-    currency: t.text('currency').notNull().default('USD'),
-    status: t.text('status').notNull().default('pending').$type<PaymentStatus>(),
-    recipientEmail: t.text('recipient_email').notNull(),
-    description: t.text('description'),
+    title: t.text('title').notNull(),
+    content: t.text('content'),
+    status: t.text('status').notNull().default('draft').$type<PostStatus>(),
     lastWebhookId: t.text('last_webhook_id'),
     createdBy: t
       .text('created_by')
@@ -119,5 +120,5 @@ export const payments = pgTable(
     createdAt: t.timestamp('created_at', { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
     updatedAt: t.timestamp('updated_at', { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
   }),
-  (t) => [index('payments_created_by_idx').on(t.createdBy), index('payments_status_idx').on(t.status)],
+  (t) => [index('posts_created_by_idx').on(t.createdBy), index('posts_status_idx').on(t.status)],
 );

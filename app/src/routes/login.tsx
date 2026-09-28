@@ -5,7 +5,7 @@ import { authClient } from '../lib/auth';
 export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
     const { data: session } = await authClient.getSession();
-    if (session) throw redirect({ to: '/payments' });
+    if (session) throw redirect({ to: '/posts' });
   },
   component: LoginRoute,
 });
@@ -35,7 +35,7 @@ function LoginRoute() {
       if (result.error) {
         setError(result.error.message || 'Login failed');
       } else {
-        navigate({ to: '/payments' });
+        navigate({ to: '/posts' });
       }
     } catch {
       setError('An unexpected error occurred');

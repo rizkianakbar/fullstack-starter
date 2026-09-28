@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "033afe7f-318e-4035-81f2-787c822acfb9",
+  "id": "e62c80ed-7cb9-420c-ac74-f5fcef789085",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -20,7 +20,7 @@
     },
     {
       "isRlsEnabled": false,
-      "name": "payments",
+      "name": "posts",
       "entityType": "tables",
       "schema": "public"
     },
@@ -300,46 +300,7 @@
       "name": "id",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
-    },
-    {
-      "type": "integer",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": null,
-      "generated": null,
-      "identity": null,
-      "name": "amount",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "payments"
-    },
-    {
-      "type": "text",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "'USD'",
-      "generated": null,
-      "identity": null,
-      "name": "currency",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "payments"
-    },
-    {
-      "type": "text",
-      "typeSchema": null,
-      "notNull": true,
-      "dimensions": 0,
-      "default": "'pending'",
-      "generated": null,
-      "identity": null,
-      "name": "status",
-      "entityType": "columns",
-      "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "text",
@@ -349,10 +310,10 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "recipient_email",
+      "name": "title",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "text",
@@ -362,10 +323,23 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "description",
+      "name": "content",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
+    },
+    {
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "'draft'",
+      "generated": null,
+      "identity": null,
+      "name": "status",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "posts"
     },
     {
       "type": "text",
@@ -378,7 +352,7 @@
       "name": "last_webhook_id",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "text",
@@ -391,7 +365,7 @@
       "name": "created_by",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "timestamp with time zone",
@@ -404,7 +378,7 @@
       "name": "created_at",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "timestamp with time zone",
@@ -417,7 +391,7 @@
       "name": "updated_at",
       "entityType": "columns",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "type": "text",
@@ -750,10 +724,10 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "payments_created_by_idx",
+      "name": "posts_created_by_idx",
       "entityType": "indexes",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "nameExplicit": true,
@@ -771,10 +745,10 @@
       "with": "",
       "method": "btree",
       "concurrently": false,
-      "name": "payments_status_idx",
+      "name": "posts_status_idx",
       "entityType": "indexes",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "nameExplicit": false,
@@ -822,10 +796,10 @@
       ],
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
-      "name": "payments_created_by_users_id_fkey",
+      "name": "posts_created_by_users_id_fkey",
       "entityType": "fks",
       "schema": "public",
-      "table": "payments"
+      "table": "posts"
     },
     {
       "nameExplicit": false,
@@ -869,9 +843,9 @@
         "id"
       ],
       "nameExplicit": false,
-      "name": "payments_pkey",
+      "name": "posts_pkey",
       "schema": "public",
-      "table": "payments",
+      "table": "posts",
       "entityType": "pks"
     },
     {
