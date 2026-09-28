@@ -70,6 +70,10 @@ run = ["bun i --frozen-lockfile"]
 description = "Open Drizzle Studio"
 run = ["bun drizzle-kit studio --port 4444"]
 
+[tasks.ui]
+description = "Run the shadcn/ui CLI, e.g. `mise ui add button` (or `mise ui add` for the interactive picker)"
+run = "bunx shadcn@latest"
+
 [tools]
 bun = "1.3.12"
 node = "24.11.1"

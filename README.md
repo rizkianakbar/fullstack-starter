@@ -50,6 +50,7 @@ fullstack-starter/
 | `mise test` | Run tests |
 | `mise clean` | Clean node_modules and logs |
 | `mise api <cmd>` | Run API CLI commands |
+| `mise ui add <component>` | Add a shadcn/ui component into `assets/components/ui/` (omit `<component>` for the interactive picker) |
 
 ### API CLI Commands
 

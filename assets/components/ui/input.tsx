@@ -1,11 +1,10 @@
-// biome-ignore lint/style/useImportType: <TOdo: Fix this>
-import * as React from 'react';
-
-import { cn } from '#assets/lib/utils.ts';
+import { Input as InputPrimitive } from '@base-ui/react/input';
+import { cn } from 'cn';
+import type * as React from 'react';
 
 function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
   return (
-    <input
+    <InputPrimitive
       type={type}
       data-slot="input"
       className={cn(

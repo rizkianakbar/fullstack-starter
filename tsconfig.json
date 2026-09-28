@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "#api/*": ["./api/*"],
+      "#app/*": ["./app/*"],
+      "#assets/*": ["./assets/*"]
+    }
+  },
+  "include": []
+}
